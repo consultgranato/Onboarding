@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Onboarding Assessment | Consult Granato Education</title>
+  <meta name="description" content="A student onboarding assessment covering interests, executive functioning, and transition readiness.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-dark: #0891b2;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    h1, h2, h3, h4, .font-bold, .font-semibold {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: -0.015em;
+    }
+    .brand-cyan { color: #06b6d4; }
+    .btn-accent {
+      background-color: #06b6d4;
+      color: white;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-accent:hover {
+      background-color: #0891b2;
+      transform: translateY(-1px);
+    }
+    .section-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .quiz-option {
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover {
+      border-color: #06b6d4;
+      background-color: #f0fdfa;
+    }
+    .quiz-option.selected {
+      border-color: #06b6d4;
+      background-color: #f0fdfa;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+    .progress-bar { transition: width 0.3s ease; }
+    .result-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .section-divider { border-top: 2px dashed #e2e8f0; margin: 1.5rem 0; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeIn 0.25s ease forwards; }
+
+    @media print {
+      @page { margin: 0.5in; size: letter; }
+      body * { visibility: hidden; }
+      #print-area, #print-area * { visibility: visible; }
+      #print-area {
+        position: absolute; left: 0; top: 0;
+        width: 100%; font-size: 10pt; line-height: 1.35;
+      }
+      .result-card {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        margin-bottom: 12px !important;
+        padding: 12px 14px !important;
+        break-inside: avoid;
+      }
+      h3, h4 { font-size: 11pt !important; margin-bottom: 6px !important; }
+      .text-2xl { font-size: 13pt !important; }
+      ul { font-size: 9.5pt !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="https://consultgranato.com" class="flex items-center gap-x-3 hover:opacity-80 transition-opacity">
+        <img src="https://consultgranato.com/assets/images/image01.png?v=5266847a"
+             alt="Consult Granato Education"
+             class="h-9 w-auto flex-shrink-0"
+             onerror="this.style.display='none'">
+        <div class="leading-none">
+          <div class="font-semibold text-[21px] tracking-[-0.015em] text-slate-900">Consult Granato Education</div>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-6 py-10">
+
+    <!-- ===================== WELCOME SCREEN ===================== -->
+    <div id="welcome-screen">
+      <div class="text-center mb-10">
+        <!-- Hero logo -->
+        <img src="https://consultgranato.com/assets/images/image01.png?v=5266847a"
+             alt="Consult Granato Education"
+             class="h-16 w-auto mx-auto mb-5"
+             onerror="this.style.display='none'">
+        <h1 class="text-4xl sm:text-[42px] font-semibold tracking-[-0.02em] text-slate-900 mb-4">
+          Student Onboarding Assessment
+        </h1>
+        <p class="max-w-2xl mx-auto text-lg text-slate-600">
+          Help us get to know you — your interests, how you work, and where you're headed.
+        </p>
+      </div>
+
+      <div class="section-card p-8 max-w-3xl mx-auto">
+        <p class="text-slate-700 mb-4">This assessment covers three areas:</p>
+        <ul class="mb-6 space-y-2 text-slate-700">
+          <li class="flex items-start gap-x-2"><span class="text-cyan-500 mt-1">•</span><span><strong>About You</strong> — your interests, strengths, and how you learn best</span></li>
+          <li class="flex items-start gap-x-2"><span class="text-cyan-500 mt-1">•</span><span><strong>How You Work</strong> — your executive functioning skills like planning and organization</span></li>
+          <li class="flex items-start gap-x-2"><span class="text-cyan-500 mt-1">•</span><span><strong>Your Future</strong> — transition readiness and your goals after high school</span></li>
+        </ul>
+        <p class="text-slate-700 mb-6">
+          There are no right or wrong answers. Answer honestly — this helps us support you in the best way possible. Takes about <strong>25–30 minutes</strong>.
+        </p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
+          <div class="flex items-start gap-x-3">
+            <i class="fa-solid fa-info-circle text-cyan-500 mt-1"></i>
+            <div class="text-sm text-slate-600">
+              <strong>Tip:</strong> You can go back and change any answer before you finish. Take your time — the more honest your answers, the more useful your results will be.
+            </div>
+          </div>
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-700 mb-2">First, what's your name?</label>
+          <input type="text" id="student-name-input" placeholder="Enter your first and last name"
+                 class="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+          <p id="name-error" class="text-red-500 text-xs mt-1 hidden">Please enter your name to continue.</p>
+        </div>
+        <button onclick="startAssessment()"
+                class="w-full sm:w-auto btn-accent px-10 py-3.5 text-lg font-semibold rounded-2xl flex items-center justify-center gap-x-2 shadow">
+          <span>Begin Assessment</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <p class="text-center text-xs text-slate-500 mt-6">Your responses are confidential and used only by your consultant.</p>
+        <div class="text-center mt-3">
+          <button onclick="loadSampleResults()" class="text-[10px] text-slate-400 hover:text-slate-600 underline">preview sample results</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== QUIZ SCREEN ===================== -->
+    <div id="quiz-screen" class="hidden">
+      <div class="max-w-2xl mx-auto">
+        <!-- Progress -->
+        <div class="mb-3">
+          <div class="flex justify-between items-center mb-1 text-xs">
+            <div class="font-medium text-slate-600">
+              Question <span id="current-q-num">1</span> of <span id="total-q-num">58</span>
+            </div>
+            <div class="text-slate-500" id="progress-pct">0% complete</div>
+          </div>
+          <div class="h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-1.5 bg-cyan-500 rounded-full progress-bar" style="width:0%"></div>
+          </div>
+          <div id="section-label" class="text-[11px] text-cyan-600 font-medium mt-1"></div>
+        </div>
+        <!-- Question Card -->
+        <div class="section-card p-5 fade-in" id="question-card">
+          <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-900 leading-snug mb-4"></div>
+          <div id="answer-options"></div>
+        </div>
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-3">
+          <button onclick="previousQuestion()"
+                  class="px-4 py-2 rounded-lg border border-slate-300 hover:bg-white text-xs font-medium flex items-center gap-x-2">
+            <i class="fa-solid fa-arrow-left"></i><span>Previous</span>
+          </button>
+          <button onclick="nextQuestion()" id="next-btn"
+                  class="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-x-2 disabled:opacity-40 disabled:cursor-not-allowed">
+            <span id="next-btn-text">Next</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="text-center mt-2">
+          <button onclick="exitQuiz()" class="text-[10px] text-slate-500 hover:text-slate-700 underline">Exit Assessment</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== RESULTS SCREEN ===================== -->
+    <div id="results-screen" class="hidden">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-8">
+          <!-- Small logo on results -->
+          <div class="flex items-center justify-center gap-x-3 mb-4">
+            <img src="https://consultgranato.com/assets/images/image01.png?v=5266847a"
+                 alt="Consult Granato Education"
+                 class="h-7 w-auto"
+                 onerror="this.style.display='none'">
+            <span class="text-xs font-semibold text-slate-500 tracking-wide uppercase">Consult Granato Education</span>
+          </div>
+          <h2 class="text-3xl font-semibold tracking-tight text-slate-900">Assessment Complete</h2>
+          <p class="text-slate-500 mt-2" id="results-student-name"></p>
+        </div>
+        <div id="print-area"></div>
+        <div class="flex flex-wrap gap-3 justify-center mt-8 no-print">
+          <button onclick="downloadResults()"
+                  class="flex items-center gap-x-2 px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-sm font-medium">
+            <i class="fa-solid fa-download"></i><span>Download / Print Results</span>
+          </button>
+          <button onclick="restartAssessment()"
+                  class="flex items-center gap-x-2 px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-sm font-medium">
+            <i class="fa-solid fa-redo"></i><span>Start Over</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t bg-white py-6 mt-10">
+    <div class="max-w-4xl mx-auto px-6 flex items-center gap-x-3">
+      <img src="https://consultgranato.com/assets/images/image01.png?v=5266847a"
+           alt="Consult Granato Education"
+           class="h-7 w-auto flex-shrink-0"
+           onerror="this.style.display='none'">
+      <div>
+        <div class="text-xs text-slate-500 leading-relaxed">
+          <strong>Disclaimer:</strong> This assessment is an informal onboarding tool. It is not a formal evaluation, diagnostic instrument, or substitute for professional assessment.
+        </div>
+        <div class="text-[10px] text-slate-400 mt-1">© Consult Granato Education • Confidential Student Assessment</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    emailjs.init("T5NmSQNH56zZHHTEF");
+    const EMAILJS_SERVICE  = "service_uagukex";
+    const EMAILJS_TEMPLATE = "template_flife89";
+
+    const sectionMap = {
+      "About You": "About You",
+      "Executive Functioning": "How You Work",
+      "Transition": "Your Future"
+    };
+
+    const questions = [
+
+      // ── ABOUT YOU (10 questions: 8 click, 2 free text) ────────
+
+      { id:"a1", section:"About You",
+        text:"What are your hobbies and interests outside of school?",
+        type:"multi",
+        options:["Sports & Athletics","Gaming & Esports","Music (listening or playing)","Art & Drawing","Reading & Writing","Cooking & Baking","Fitness & Working Out","Outdoors & Nature","Technology & Computers","Cars & Mechanics","Fashion & Style","Film & TV","Dancing","Volunteering & Community","Spending time with friends & family","Other"]
+      },
+      { id:"a2", section:"About You",
+        text:"Which career fields interest you? Select all that apply.",
+        type:"multi",
+        options:["Health & Medicine","Education & Social Services","Business & Finance","Law, Government & Public Safety","Trades & Technical","Technology & Engineering","Arts, Media & Design","Sports, Fitness & Outdoors","Hospitality, Food & Service","Transportation & Logistics","Not sure yet"]
+      },
+      { id:"a3", section:"About You",
+        text:"What are your academic strengths? Select all that apply.",
+        type:"multi",
+        options:["Math & Numbers","Reading & English","Science","History & Social Studies","Art & Music","Physical Education","Technology & Computers","Writing","Public Speaking","Helping & Supporting others"]
+      },
+      { id:"a4", section:"About You",
+        text:"What are your personal strengths? Select all that apply.",
+        type:"multi",
+        options:["Creative & Innovative","Hard-working & Determined","Good listener","Natural leader","Team player","Problem solver","Calm under pressure","Organized & detail-oriented","Adaptable & flexible","Empathetic & caring","Funny & personable","Honest & reliable"]
+      },
+      { id:"a5", section:"About You",
+        text:"How do you learn best?",
+        type:"multi",
+        options:["Watching or seeing examples","Listening and discussing","Hands-on practice","Reading and writing","Working with others","Working independently","Trial and error","Step-by-step instructions"]
+      },
+      { id:"a6", section:"About You",
+        text:"What kind of support is most helpful for you?",
+        type:"multi",
+        options:["Step-by-step directions","Extra time to think","Frequent check-ins","Written reminders or notes","Someone to talk it through with","Space to work independently","Visual examples","Encouragement and positive feedback"]
+      },
+      { id:"a7", section:"About You",
+        text:"How do you prefer to work?",
+        type:"multi",
+        options:["Alone and independently","In a small group","In a large team","Outdoors or on the move","In a quiet environment","In a busy or active environment","With clear structure and rules","With flexibility and freedom"]
+      },
+      { id:"a8", section:"About You",
+        text:"What is going well for you at school right now?",
+        type:"multi",
+        options:["My grades","Relationships with teachers","Relationships with classmates","Staying organized","Managing my time","Participating in class","Completing assignments","My attitude and motivation","Attendance","Extracurricular activities"]
+      },
+      { id:"a9", section:"About You",
+        text:"What has been your biggest challenge at school recently?",
+        type:"text"
+      },
+      { id:"a10", section:"About You",
+        text:"What is one goal you have for yourself — school, life, or anything important to you.",
+        type:"text"
+      },
+
+      // ── EXECUTIVE FUNCTIONING (3 × 10 categories = 30) ────────
+
+      // Task Initiation
+      { id:"e1a", section:"Executive Functioning", category:"Task Initiation",
+        text:"I start tasks like homework or chores without needing a lot of reminders.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e1b", section:"Executive Functioning", category:"Task Initiation",
+        text:"When I have free time, I can choose something productive to work on without being told.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e1c", section:"Executive Functioning", category:"Task Initiation",
+        text:"I begin working on assignments soon after they are given rather than putting them off.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Planning & Organization
+      { id:"e2a", section:"Executive Functioning", category:"Planning & Organization",
+        text:"When I have a big project, I break it into smaller steps and work through them.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e2b", section:"Executive Functioning", category:"Planning & Organization",
+        text:"I keep track of my assignments, deadlines, and materials without losing things.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e2c", section:"Executive Functioning", category:"Planning & Organization",
+        text:"I keep my backpack, locker, bedroom, or workspace organized enough to find what I need.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Working Memory
+      { id:"e3a", section:"Executive Functioning", category:"Working Memory",
+        text:"I can hold information in my head while working on something (like remembering instructions while completing a task).",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e3b", section:"Executive Functioning", category:"Working Memory",
+        text:"I remember multi-step directions without needing them repeated.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e3c", section:"Executive Functioning", category:"Working Memory",
+        text:"I can keep track of where I am in a task even if I get interrupted.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Time Management
+      { id:"e4a", section:"Executive Functioning", category:"Time Management",
+        text:"I manage my time well enough to finish things before they are due.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e4b", section:"Executive Functioning", category:"Time Management",
+        text:"I have a good sense of how long tasks will take before I start them.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e4c", section:"Executive Functioning", category:"Time Management",
+        text:"I arrive on time to school, class, work, or commitments.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Flexibility
+      { id:"e5a", section:"Executive Functioning", category:"Flexibility",
+        text:"When something unexpected happens or plans change, I can adjust without getting too frustrated.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e5b", section:"Executive Functioning", category:"Flexibility",
+        text:"I can switch between different tasks or subjects without losing too much time getting resettled.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e5c", section:"Executive Functioning", category:"Flexibility",
+        text:"When my first approach to a problem is not working, I try a different way.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Sustained Attention
+      { id:"e6a", section:"Executive Functioning", category:"Sustained Attention",
+        text:"I can stay focused on a task even when there are distractions around me.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e6b", section:"Executive Functioning", category:"Sustained Attention",
+        text:"I can work on something I do not enjoy for a reasonable amount of time without giving up.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e6c", section:"Executive Functioning", category:"Sustained Attention",
+        text:"I finish tasks completely rather than leaving them partially done.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Impulse Control
+      { id:"e7a", section:"Executive Functioning", category:"Impulse Control",
+        text:"I think about the consequences of my actions before doing something.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e7b", section:"Executive Functioning", category:"Impulse Control",
+        text:"I can wait my turn and avoid interrupting others in conversations or class.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e7c", section:"Executive Functioning", category:"Impulse Control",
+        text:"I stop and think before reacting when I feel frustrated or upset.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Self-Monitoring
+      { id:"e8a", section:"Executive Functioning", category:"Self-Monitoring",
+        text:"When I make a mistake, I can stop, think about what went wrong, and try a different approach.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e8b", section:"Executive Functioning", category:"Self-Monitoring",
+        text:"I notice when I am getting overwhelmed and do something about it before it gets worse.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e8c", section:"Executive Functioning", category:"Self-Monitoring",
+        text:"I check my work for errors before turning it in.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Emotional Regulation
+      { id:"e9a", section:"Executive Functioning", category:"Emotional Regulation",
+        text:"I can manage my emotions well enough that they do not usually interfere with my schoolwork or relationships.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e9b", section:"Executive Functioning", category:"Emotional Regulation",
+        text:"After something upsetting happens, I can calm down and move on within a reasonable amount of time.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e9c", section:"Executive Functioning", category:"Emotional Regulation",
+        text:"I can handle criticism or negative feedback without shutting down or getting angry.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Goal-Directed Persistence
+      { id:"e10a", section:"Executive Functioning", category:"Goal-Directed Persistence",
+        text:"I set goals for myself and follow through on them.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e10b", section:"Executive Functioning", category:"Goal-Directed Persistence",
+        text:"Even when a task is difficult or boring, I keep working toward finishing it.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"e10c", section:"Executive Functioning", category:"Goal-Directed Persistence",
+        text:"I stay motivated to work toward long-term goals even when results are not immediate.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // ── TRANSITION (3 × 6 categories = 18) ───────────────────
+
+      // Daily Living Skills
+      { id:"t1a", section:"Transition", category:"Daily Living Skills",
+        text:"I prepare simple, healthy meals for myself without needing much help or reminders.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t1b", section:"Transition", category:"Daily Living Skills",
+        text:"I do my own laundry and keep my living space reasonably clean and organized.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t1c", section:"Transition", category:"Daily Living Skills",
+        text:"I manage my personal hygiene and grooming independently on a daily basis.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Self-Advocacy
+      { id:"t2a", section:"Transition", category:"Self-Advocacy",
+        text:"I can clearly explain my strengths and the areas where I need support.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t2b", section:"Transition", category:"Self-Advocacy",
+        text:"I ask for accommodations, help, or adjustments when I need them at school or work.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t2c", section:"Transition", category:"Self-Advocacy",
+        text:"I speak up for myself when making decisions about my future or in meetings.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Employment Readiness
+      { id:"t3a", section:"Transition", category:"Employment Readiness",
+        text:"I have explored jobs or careers that match my interests and strengths.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t3b", section:"Transition", category:"Employment Readiness",
+        text:"I understand what employers expect from reliable employees (punctuality, communication, teamwork).",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t3c", section:"Transition", category:"Employment Readiness",
+        text:"I have practiced filling out job applications or participating in interviews.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Post-Secondary Planning
+      { id:"t4a", section:"Transition", category:"Post-Secondary Planning",
+        text:"I know the different options for college, trade school, apprenticeships, or other training after high school.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t4b", section:"Transition", category:"Post-Secondary Planning",
+        text:"I understand how to request accommodations or supports in college or training programs.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t4c", section:"Transition", category:"Post-Secondary Planning",
+        text:"I can set realistic goals for my education or training after high school.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Community Participation
+      { id:"t5a", section:"Transition", category:"Community Participation",
+        text:"I can get to places I need to go using public transportation, rideshares, or other independent means.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t5b", section:"Transition", category:"Community Participation",
+        text:"I know how to find and use community resources when I need them (clinics, libraries, job centers, etc.).",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t5c", section:"Transition", category:"Community Participation",
+        text:"I manage my money responsibly (budgeting, saving, and making smart spending decisions).",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+
+      // Emotional & Social Readiness
+      { id:"t6a", section:"Transition", category:"Emotional & Social Readiness",
+        text:"I can recognize when I am stressed or overwhelmed and use healthy ways to cope.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t6b", section:"Transition", category:"Emotional & Social Readiness",
+        text:"I build and maintain positive relationships with peers and supportive adults.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] },
+      { id:"t6c", section:"Transition", category:"Emotional & Social Readiness",
+        text:"I have a clear idea of what I want my life to look like after high school.",
+        type:"scale", options:["Never","Rarely","Sometimes","Often","Almost Always"] }
+    ];
+
+    // ── Category groupings ──────────────────────────────────────
+    const efCategories = {
+      "Task Initiation":           ["e1a","e1b","e1c"],
+      "Planning & Organization":   ["e2a","e2b","e2c"],
+      "Working Memory":            ["e3a","e3b","e3c"],
+      "Time Management":           ["e4a","e4b","e4c"],
+      "Flexibility":               ["e5a","e5b","e5c"],
+      "Sustained Attention":       ["e6a","e6b","e6c"],
+      "Impulse Control":           ["e7a","e7b","e7c"],
+      "Self-Monitoring":           ["e8a","e8b","e8c"],
+      "Emotional Regulation":      ["e9a","e9b","e9c"],
+      "Goal-Directed Persistence": ["e10a","e10b","e10c"]
+    };
+
+    const transitionCategories = {
+      "Daily Living Skills":          ["t1a","t1b","t1c"],
+      "Self-Advocacy":                ["t2a","t2b","t2c"],
+      "Employment Readiness":         ["t3a","t3b","t3c"],
+      "Post-Secondary Planning":      ["t4a","t4b","t4c"],
+      "Community Participation":      ["t5a","t5b","t5c"],
+      "Emotional & Social Readiness": ["t6a","t6b","t6c"]
+    };
+
+    // ── State ───────────────────────────────────────────────────
+    let currentIndex = 0;
+    let answers = {};
+    let studentName = "";
+
+    // ── Helpers ─────────────────────────────────────────────────
+    function getLevel(score, max) {
+      const pct = score / max;
+      if (pct <= 0.33) return { label:"Emerging",   color:"amber" };
+      if (pct <= 0.66) return { label:"Developing",  color:"blue" };
+      return                  { label:"Strong",      color:"emerald" };
+    }
+    function badgeCls(c) {
+      return c==="amber" ? "bg-amber-100 text-amber-700" :
+             c==="blue"  ? "bg-blue-100 text-blue-700"  :
+                           "bg-emerald-100 text-emerald-700";
+    }
+    function barCls(c) {
+      return c==="amber" ? "bg-amber-500" : c==="blue" ? "bg-blue-500" : "bg-emerald-500";
+    }
+
+    // ── Start ───────────────────────────────────────────────────
+    function startAssessment() {
+      const v = document.getElementById("student-name-input").value.trim();
+      if (!v) { document.getElementById("name-error").classList.remove("hidden"); return; }
+      studentName = v;
+      document.getElementById("name-error").classList.add("hidden");
+      document.getElementById("welcome-screen").classList.add("hidden");
+      document.getElementById("quiz-screen").classList.remove("hidden");
+      document.getElementById("total-q-num").textContent = questions.length;
+      currentIndex = 0; answers = {};
+      showQuestion();
+      window.scrollTo({ top:0, behavior:"instant" });
+    }
+
+    // ── Show Question ───────────────────────────────────────────
+    function showQuestion() {
+      const q = questions[currentIndex];
+      const total = questions.length;
+      const pct = Math.round((currentIndex / total) * 100);
+
+      document.getElementById("current-q-num").textContent = currentIndex + 1;
+      document.getElementById("progress-pct").textContent  = pct + "% complete";
+      document.getElementById("progress-bar").style.width  = pct + "%";
+      document.getElementById("section-label").textContent = sectionMap[q.section] || q.section;
+      document.getElementById("question-text").textContent = q.text;
+
+      const container = document.getElementById("answer-options");
+      container.innerHTML = "";
+
+      const nextBtn     = document.getElementById("next-btn");
+      const nextBtnText = document.getElementById("next-btn-text");
+      nextBtnText.textContent = currentIndex === total - 1 ? "See My Results" : "Next";
+
+      if (q.type === "text") {
+        const ta = document.createElement("textarea");
+        ta.className = "w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent text-[15px]";
+        ta.placeholder = "Type your answer here…";
+        ta.rows = 3;
+        ta.value = answers[q.id] || "";
+        ta.addEventListener("input", () => {
+          answers[q.id] = ta.value.trim();
+          nextBtn.disabled = !answers[q.id];
+        });
+        container.appendChild(ta);
+        nextBtn.disabled = !answers[q.id];
+
+      } else if (q.type === "multi") {
+        // 2-column grid for compact layout
+        const hint = document.createElement("p");
+        hint.className = "text-xs text-slate-500 mb-3";
+        hint.textContent = "Select all that apply.";
+        container.appendChild(hint);
+        const selected = answers[q.id] ? answers[q.id].split("|") : [];
+
+        const grid = document.createElement("div");
+        grid.className = "grid grid-cols-2 gap-2";
+
+        q.options.forEach(opt => {
+          const div = document.createElement("div");
+          div.className = "quiz-option flex items-center gap-x-2 p-2.5 rounded-lg border border-slate-200 cursor-pointer";
+          const isChecked = selected.includes(opt);
+          if (isChecked) div.classList.add("selected");
+          div.innerHTML = `
+            <div class="w-4 h-4 rounded flex items-center justify-center border-2 flex-shrink-0 ${isChecked ? "border-cyan-500 bg-cyan-500" : "border-slate-300"}">
+              ${isChecked ? '<i class="fa-solid fa-check text-white text-[9px]"></i>' : ""}
+            </div>
+            <span class="text-[13px] font-medium leading-tight">${opt}</span>`;
+          div.addEventListener("click", () => {
+            const cur = answers[q.id] ? answers[q.id].split("|") : [];
+            const idx = cur.indexOf(opt);
+            if (idx > -1) { cur.splice(idx,1); div.classList.remove("selected"); }
+            else          { cur.push(opt);     div.classList.add("selected"); }
+            const box = div.querySelector("div");
+            if (div.classList.contains("selected")) {
+              box.className = "w-4 h-4 rounded flex items-center justify-center border-2 flex-shrink-0 border-cyan-500 bg-cyan-500";
+              box.innerHTML = '<i class="fa-solid fa-check text-white text-[9px]"></i>';
+            } else {
+              box.className = "w-4 h-4 rounded flex items-center justify-center border-2 flex-shrink-0 border-slate-300";
+              box.innerHTML = "";
+            }
+            answers[q.id] = cur.filter(Boolean).join("|");
+            nextBtn.disabled = cur.filter(Boolean).length === 0;
+          });
+          grid.appendChild(div);
+        });
+        container.appendChild(grid);
+        nextBtn.disabled = !answers[q.id] || answers[q.id].split("|").filter(Boolean).length === 0;
+
+      } else if (q.type === "scale") {
+        const scaleWrap = document.createElement("div");
+        scaleWrap.className = "mt-2";
+
+        // Full label row above on all sizes
+        const labelRow = document.createElement("div");
+        labelRow.className = "flex justify-between text-[11px] text-slate-400 mb-3 px-1";
+        labelRow.innerHTML = q.options.map(o => `<span class="text-center" style="width:20%">${o}</span>`).join("");
+        scaleWrap.appendChild(labelRow);
+
+        // Button row — numbered 1–5 so they always fit
+        const btnRow = document.createElement("div");
+        btnRow.className = "flex gap-2";
+
+        q.options.forEach((opt, i) => {
+          const btn = document.createElement("button");
+          const isSel = answers[q.id] === i;
+          btn.className = `flex-1 aspect-square rounded-xl border-2 text-base font-bold transition-all duration-150 flex items-center justify-center
+            ${isSel
+              ? "border-cyan-500 bg-cyan-500 text-white shadow-sm"
+              : "border-slate-200 bg-white text-slate-600 hover:border-cyan-300 hover:bg-cyan-50"}`;
+          btn.textContent = i + 1;
+          btn.title = opt;
+          btn.addEventListener("click", () => {
+            btnRow.querySelectorAll("button").forEach(b => {
+              b.className = "flex-1 aspect-square rounded-xl border-2 text-base font-bold transition-all duration-150 flex items-center justify-center border-slate-200 bg-white text-slate-600 hover:border-cyan-300 hover:bg-cyan-50";
+            });
+            btn.className = "flex-1 aspect-square rounded-xl border-2 text-base font-bold transition-all duration-150 flex items-center justify-center border-cyan-500 bg-cyan-500 text-white shadow-sm";
+            answers[q.id] = i;
+            nextBtn.disabled = false;
+          });
+          btnRow.appendChild(btn);
+        });
+
+        scaleWrap.appendChild(btnRow);
+        container.appendChild(scaleWrap);
+        nextBtn.disabled = answers[q.id] === undefined;
+      }
+
+      const card = document.getElementById("question-card");
+      card.classList.remove("fade-in");
+      void card.offsetWidth;
+      card.classList.add("fade-in");
+      window.scrollTo({ top:0, behavior:"instant" });
+    }
+
+    // ── Navigation ──────────────────────────────────────────────
+    function nextQuestion() {
+      const q = questions[currentIndex];
+      if (q.type === "text"  && !answers[q.id]) return;
+      if (q.type === "multi" && (!answers[q.id] || answers[q.id].split("|").filter(Boolean).length===0)) return;
+      if (q.type === "scale" && answers[q.id] === undefined) return;
+      if (currentIndex < questions.length - 1) { currentIndex++; showQuestion(); }
+      else { showResults(); }
+    }
+    function previousQuestion() {
+      if (currentIndex > 0) { currentIndex--; showQuestion(); }
+    }
+    function exitQuiz() {
+      if (confirm("Are you sure you want to exit? Your progress will be lost.")) {
+        document.getElementById("quiz-screen").classList.add("hidden");
+        document.getElementById("welcome-screen").classList.remove("hidden");
+        currentIndex = 0; answers = {};
+      }
+    }
+
+    // ── Results ─────────────────────────────────────────────────
+    function showResults() {
+      document.getElementById("quiz-screen").classList.add("hidden");
+      document.getElementById("results-screen").classList.remove("hidden");
+      document.getElementById("results-student-name").textContent =
+        studentName + " • " + new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+      buildResults();
+      sendEmail();
+      window.scrollTo({ top:0, behavior:"instant" });
+    }
+
+    function buildCategoryGrid(categoryMap) {
+      let html = "";
+      Object.entries(categoryMap).forEach(([cat, ids]) => {
+        let score = 0, max = ids.length * 4;
+        ids.forEach(id => { score += (answers[id] ?? 0); });
+        const lvl = getLevel(score, max);
+        const pct = Math.round((score / max) * 100);
+        html += `
+          <div class="border border-slate-200 rounded-xl p-4">
+            <div class="flex justify-between items-center mb-2">
+              <div class="font-medium text-slate-800 text-sm">${cat}</div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold ${badgeCls(lvl.color)}">${lvl.label}</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
+              <div class="${barCls(lvl.color)} h-1.5 rounded-full" style="width:${pct}%"></div>
+            </div>
+            <div class="text-xs text-slate-500">${score} / ${max}</div>
+          </div>`;
+      });
+      return html;
+    }
+
+    function buildPriority(categoryMap, goalTemplates) {
+      const sorted = Object.entries(categoryMap).map(([cat, ids]) => {
+        let score = 0, max = ids.length * 4;
+        ids.forEach(id => { score += (answers[id] ?? 0); });
+        return { cat, score, max };
+      }).sort((a,b) => (a.score/a.max) - (b.score/b.max));
+
+      return sorted.slice(0,2).map(({ cat, score, max }) => {
+        const lvl = getLevel(score, max);
+        const goal = goalTemplates[cat] || "Work with your consultant to develop a specific goal for this area.";
+        return `
+          <div class="border border-slate-200 rounded-xl p-5 mb-4 last:mb-0">
+            <div class="flex items-center justify-between mb-2">
+              <div class="font-semibold text-slate-800">${cat}</div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold ${badgeCls(lvl.color)}">${lvl.label}</span>
+            </div>
+            <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">Proposed Goal</div>
+            <div class="text-slate-800 font-medium leading-snug text-[14.5px]">${goal}</div>
+          </div>`;
+      }).join("");
+    }
+
+    function buildResults() {
+      const pa = document.getElementById("print-area");
+
+      // About You
+      const aboutQs = questions.filter(q => q.section === "About You");
+      let aboutRows = "";
+      aboutQs.forEach(q => {
+        const ans = answers[q.id] || "—";
+        const display = q.type === "multi" ? ans.split("|").filter(Boolean).join(", ") : ans;
+        aboutRows += `
+          <div class="mb-4 last:mb-0">
+            <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">${q.text}</div>
+            <div class="text-slate-800 font-medium">${display}</div>
+          </div>`;
+      });
+
+      // EF overall
+      let efTotal = 0, efMax = 0;
+      Object.values(efCategories).forEach(ids => {
+        ids.forEach(id => { efTotal += (answers[id] ?? 0); efMax += 4; });
+      });
+      const efOverall = getLevel(efTotal, efMax);
+      const efBadge = `<span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold ${badgeCls(efOverall.color)}">${efOverall.label} EF Skills</span>`;
+
+      const efGoals = {
+        "Task Initiation":           "Within 4 weeks, I will independently start at least 3 tasks per week using a personal checklist without adult reminders.",
+        "Planning & Organization":   "By end of semester, I will use a planner or digital tool daily to track assignments and deadlines across all classes.",
+        "Working Memory":            "Over the next month, I will use written or digital notes to capture key information during class and review them before tasks.",
+        "Time Management":           "Within 6 weeks, I will complete at least 80% of assignments on or before due dates using a weekly time-blocking strategy.",
+        "Flexibility":               "Over the next 8 weeks, I will practice using a coping phrase or strategy when plans change unexpectedly, logging at least 3 uses per week.",
+        "Sustained Attention":       "In the next 4 weeks, I will practice focused work sessions of 20+ minutes using a timer, completing at least 3 sessions per week.",
+        "Impulse Control":           "Over the next month, I will practice a pause-and-think strategy before responding in class or social situations at least 3x per week.",
+        "Self-Monitoring":           "Within 6 weeks, I will review my work before submitting at least 4 out of 5 assignments and note one thing I would change.",
+        "Emotional Regulation":      "Over the next 8 weeks, I will use at least 2 identified coping strategies when feeling overwhelmed and track their effectiveness.",
+        "Goal-Directed Persistence": "By end of semester, I will set one personal goal per month, identify 3 action steps, and check in with my consultant on progress."
+      };
+
+      // Transition overall
+      let transTotal = 0, transMax = 0;
+      Object.values(transitionCategories).forEach(ids => {
+        ids.forEach(id => { transTotal += (answers[id] ?? 0); transMax += 4; });
+      });
+      const transOverall = getLevel(transTotal, transMax);
+      const transBadge = `<span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold ${badgeCls(transOverall.color)}">${transOverall.label} Transition Readiness</span>`;
+
+      const transGoals = {
+        "Daily Living Skills":          "By end of semester, I will independently handle at least 3 daily living tasks per week (meals, laundry, hygiene) without adult reminders.",
+        "Self-Advocacy":                "In my next IEP or planning meeting, I will clearly explain my 3 strengths, 2 areas of need, and the supports I am requesting.",
+        "Employment Readiness":         "Within 3 months, I will apply for at least one job, internship, or volunteer role that matches my identified interests.",
+        "Post-Secondary Planning":      "By end of school year, I will research 2–3 post-secondary programs and identify the disability services process for at least one.",
+        "Community Participation":      "Within 2 months, I will independently use community transportation or resources at least 4 times without adult support.",
+        "Emotional & Social Readiness": "Over the next 8 weeks, I will use at least 2 healthy coping strategies when stressed and initiate one positive social interaction per week."
+      };
+
+      pa.innerHTML = `
+        <div class="result-card p-8 mb-6">
+          <h3 class="text-xl font-semibold text-slate-900 mb-1">About ${studentName}</h3>
+          <p class="text-slate-500 text-sm mb-5">Interests, strengths, and learning preferences</p>
+          ${aboutRows}
+        </div>
+
+        <div class="result-card p-8 mb-6">
+          <div class="mb-3">${efBadge}</div>
+          <h3 class="text-xl font-semibold text-slate-900 mb-1">Executive Functioning</h3>
+          <p class="text-slate-500 text-sm mb-5">How you plan, organize, focus, and manage yourself</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">${buildCategoryGrid(efCategories)}</div>
+          <div class="section-divider"></div>
+          <h4 class="font-semibold text-slate-900 mb-2">Priority Focus Areas</h4>
+          <p class="text-slate-500 text-sm mb-4">The two areas where focused support will have the greatest impact.</p>
+          ${buildPriority(efCategories, efGoals)}
+        </div>
+
+        <div class="result-card p-8 mb-6">
+          <div class="mb-3">${transBadge}</div>
+          <h3 class="text-xl font-semibold text-slate-900 mb-1">Transition Readiness</h3>
+          <p class="text-slate-500 text-sm mb-5">Preparedness for life, work, and independence after high school</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">${buildCategoryGrid(transitionCategories)}</div>
+          <div class="section-divider"></div>
+          <h4 class="font-semibold text-slate-900 mb-2">Priority Focus Areas</h4>
+          <p class="text-slate-500 text-sm mb-4">The two areas where focused support will have the greatest impact.</p>
+          ${buildPriority(transitionCategories, transGoals)}
+        </div>
+
+        <div class="result-card p-8 bg-slate-50 border-slate-200">
+          <div class="flex items-center gap-x-3 mb-3">
+            <img src="https://consultgranato.com/assets/images/image01.png?v=5266847a" alt="Consult Granato Education"
+                 style="height:28px;width:auto;" onerror="this.style.display='none'">
+            <h4 class="font-semibold text-slate-900">Next Steps with Consult Granato Education</h4>
+          </div>
+          <p class="text-slate-700 mb-3">Your consultant will review these results before your first session. Come ready to talk through anything that surprised you or that you want to explore further.</p>
+          <a href="https://consultgranato.com/#contact" class="inline-flex items-center text-cyan-500 font-medium hover:underline">
+            Learn more about our services →
+          </a>
+        </div>`;
+    }
+
+    // ── Email ────────────────────────────────────────────────────
+    function sendEmail() {
+      const date = new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+      let aboutText = "";
+      questions.filter(q => q.section==="About You").forEach(q => {
+        const ans = answers[q.id] || "No answer";
+        aboutText += `${q.text}\n→ ${q.type==="multi" ? ans.split("|").filter(Boolean).join(", ") : ans}\n\n`;
+      });
+      let efText = "";
+      Object.entries(efCategories).forEach(([cat,ids]) => {
+        let s=0,m=ids.length*4; ids.forEach(id=>{s+=(answers[id]??0);}); 
+        efText += `${cat}: ${getLevel(s,m).label} (${s}/${m})\n`;
+      });
+      let transText = "";
+      Object.entries(transitionCategories).forEach(([cat,ids]) => {
+        let s=0,m=ids.length*4; ids.forEach(id=>{s+=(answers[id]??0);}); 
+        transText += `${cat}: ${getLevel(s,m).label} (${s}/${m})\n`;
+      });
+      emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+        student_name: studentName,
+        date:         date,
+        about_section: aboutText,
+        ef_section:   efText,
+        transition_section: transText
+      }).then(()=>console.log("Sent.")).catch(e=>console.warn("Email failed:",e));
+    }
+
+    // ── Sample Results ───────────────────────────────────────────
+    function loadSampleResults() {
+      studentName = "Sample Student";
+      answers["a1"]  = "Sports & Athletics|Gaming & Esports|Music (listening or playing)";
+      answers["a2"]  = "Health & Medicine|Sports, Fitness & Outdoors";
+      answers["a3"]  = "Physical Education|Science";
+      answers["a4"]  = "Hard-working & Determined|Calm under pressure|Team player";
+      answers["a5"]  = "Hands-on practice|Working with others";
+      answers["a6"]  = "Step-by-step directions|Frequent check-ins";
+      answers["a7"]  = "In a small group|Outdoors or on the move";
+      answers["a8"]  = "Relationships with teachers|Extracurricular activities";
+      answers["a9"]  = "Keeping up with deadlines when multiple things are due at once";
+      answers["a10"] = "Figure out what I'm doing after high school and have a real plan";
+      // EF mixed scores
+      ["e1a","e1b","e1c"].forEach((id,i)=>{answers[id]=[1,2,1][i];});
+      ["e2a","e2b","e2c"].forEach((id,i)=>{answers[id]=[2,1,2][i];});
+      ["e3a","e3b","e3c"].forEach((id,i)=>{answers[id]=[2,1,2][i];});
+      ["e4a","e4b","e4c"].forEach((id,i)=>{answers[id]=[1,1,2][i];});
+      ["e5a","e5b","e5c"].forEach((id,i)=>{answers[id]=[3,3,2][i];});
+      ["e6a","e6b","e6c"].forEach((id,i)=>{answers[id]=[2,1,2][i];});
+      ["e7a","e7b","e7c"].forEach((id,i)=>{answers[id]=[3,3,2][i];});
+      ["e8a","e8b","e8c"].forEach((id,i)=>{answers[id]=[2,2,3][i];});
+      ["e9a","e9b","e9c"].forEach((id,i)=>{answers[id]=[3,3,4][i];});
+      ["e10a","e10b","e10c"].forEach((id,i)=>{answers[id]=[2,1,2][i];});
+      // Transition mixed scores
+      ["t1a","t1b","t1c"].forEach((id,i)=>{answers[id]=[3,2,4][i];});
+      ["t2a","t2b","t2c"].forEach((id,i)=>{answers[id]=[2,1,1][i];});
+      ["t3a","t3b","t3c"].forEach((id,i)=>{answers[id]=[2,3,1][i];});
+      ["t4a","t4b","t4c"].forEach((id,i)=>{answers[id]=[2,1,2][i];});
+      ["t5a","t5b","t5c"].forEach((id,i)=>{answers[id]=[3,2,1][i];});
+      ["t6a","t6b","t6c"].forEach((id,i)=>{answers[id]=[2,3,2][i];});
+
+      document.getElementById("welcome-screen").classList.add("hidden");
+      document.getElementById("results-screen").classList.remove("hidden");
+      document.getElementById("results-student-name").textContent =
+        "Sample Student • " + new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+      buildResults();
+      window.scrollTo({ top:0, behavior:"instant" });
+    }
+
+    // ── Print ────────────────────────────────────────────────────
+    function downloadResults() {
+      const pa = document.getElementById("print-area");
+      const hdr = document.createElement("div");
+      hdr.id = "temp-print-header";
+      hdr.style.cssText = "margin-bottom:14px;padding-bottom:8px;border-bottom:2.5px solid #06b6d4;";
+      hdr.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;font-family:-apple-system,sans-serif;">
+          <div>
+            <div style="font-weight:700;font-size:13pt;color:#0f172a;">Consult Granato Education</div>
+            <div style="font-size:10pt;color:#475569;margin-top:2px;">Student Onboarding Assessment</div>
+          </div>
+          <div style="font-size:9pt;color:#64748b;text-align:right;">
+            ${new Date().toLocaleDateString()}<br>${studentName} • Confidential
+          </div>
+        </div>`;
+      pa.prepend(hdr);
+      window.print();
+      setTimeout(()=>hdr.remove(), 900);
+    }
+
+    function restartAssessment() {
+      document.getElementById("results-screen").classList.add("hidden");
+      document.getElementById("welcome-screen").classList.remove("hidden");
+      currentIndex=0; answers={}; studentName="";
+      document.getElementById("student-name-input").value="";
+      document.getElementById("print-area").innerHTML="";
+    }
+
+    window.onload = () => {
+      tailwind.config = {
+        theme:{ extend:{ colors:{ accent:"#06b6d4","accent-dark":"#0891b2" } } }
+      };
+    };
+  </script>
+</body>
+</html>
